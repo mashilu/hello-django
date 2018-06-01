@@ -5,6 +5,7 @@ from .forms import TopicForm
 from .forms import EntryForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -14,14 +15,16 @@ def index(request):
     return render(request, 'learning_logs/index.html')
 
 
-def topics(request):
+@login_required
+def show_topics(request):
     """显示所有主题"""
     topics = Topic.objects.order_by('date_added')
     context = {'topics': topics}
     return render(request, 'learning_logs/topics.html', context)
 
 
-def topic(request, topic_id):
+@login_required
+def show_topic(request, topic_id):
     """显示单个主题及其所有的条目"""
     topic = Topic.objects.get(id=topic_id)
     entries = topic.entry_set.order_by('-date_added')
@@ -29,7 +32,8 @@ def topic(request, topic_id):
     return render(request, 'learning_logs/topic.html', context)
 
 
-def new_topic(request):
+@login_required
+def add_new_topic(request):
     """添加新主题"""
     if request.method != 'POST':
         # 未提交数据，创建一个新表单
@@ -39,12 +43,13 @@ def new_topic(request):
         form = TopicForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('learning_logs:topics'))
+            return HttpResponseRedirect(reverse('learning_logs:show_topics'))
     context = {'form': form}
-    return render(request, 'learning_logs/new_topic.html', context)
+    return render(request, 'learning_logs/add_new_topic.html', context)
 
 
-def add_entry(request, topic_id):
+@login_required
+def add_new_entry(request, topic_id):
     """在特定的主题中添加新条目"""
     topic = Topic.objects.get(id=topic_id)
 
@@ -58,12 +63,13 @@ def add_entry(request, topic_id):
             new_entry = form.save(commit=False)
             new_entry.topic = topic
             new_entry.save()
-            return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic_id]))
+            return HttpResponseRedirect(reverse('learning_logs:show_topic', args=[topic_id]))
 
     context = {'topic': topic, 'form': form}
-    return render(request, 'learning_logs/add_entry.html', context)
+    return render(request, 'learning_logs/add_new_entry.html', context)
 
 
+@login_required
 def edit_entry(request, entry_id):
     """编辑既有条目entry"""
     entry = Entry.objects.get(id=entry_id)
@@ -77,6 +83,6 @@ def edit_entry(request, entry_id):
         form = EntryForm(instance=entry, data=request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic.id]))
+            return HttpResponseRedirect(reverse('learning_logs:show_topic', args=[topic.id]))
     context = {'entry': entry, 'topic': topic, 'form': form}
     return render(request, 'learning_logs/edit_entry.html', context)
