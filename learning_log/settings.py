@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 第三方应用程序
     'bootstrap3',
+<<<<<<< HEAD
+=======
 
+>>>>>>> 13b48e84053247ea2ab8ec71fd2e461db4fdee99
     # 我的应用程序
     'learning_logs',
     'users',

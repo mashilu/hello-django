@@ -6,7 +6,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+<<<<<<< HEAD
+=======
 
+>>>>>>> 13b48e84053247ea2ab8ec71fd2e461db4fdee99
     <title>Learning Log</title>
 
     {% bootstrap_css %}
@@ -28,18 +31,33 @@
 
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+<<<<<<< HEAD
+                    <li><a href="{%url 'learning_logs:topics' %}">Topics</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                        <li><a>Hello, {{ user.username }}</a></li>
+=======
                     <li><a href="{% url 'learning_logs:show_topics' %}">Topics</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                         <li><a>Hello, {{ user.username }}.</a></li>
+>>>>>>> 13b48e84053247ea2ab8ec71fd2e461db4fdee99
                         <li><a href="{% url 'users:logout' %}">log out</a></li>
                     {% else %}
                         <li><a href="{% url 'users:register' %}">register</a></li>
                         <li><a href="{% url 'users:login' %}">log in</a></li>
                     {% endif %}
                 </ul>
+<<<<<<< HEAD
+            </div><!-- /.nav-collapse -->
+
+
+        </div>
+    </nav>
+=======
             </div><!--/.nav-collapse -->
 
         </div>
@@ -53,5 +71,6 @@
             {% block content %}{% endblock content %}
         </div>
     </div> <!-- /container -->
+>>>>>>> 13b48e84053247ea2ab8ec71fd2e461db4fdee99
 </body>
 </html>
